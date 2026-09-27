@@ -91,6 +91,17 @@
             box-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
         }
 
+        .vip-badge {
+            background-color: var(--gold);
+            color: var(--navy);
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 5px;
+            display: none;
+            font-weight: bold;
+        }
+
         .submit-btn {
             background-color: var(--gold);
             color: var(--navy);
@@ -132,8 +143,11 @@
 
     <form id="boardingForm">
         <div class="form-group">
-            <label for="name">اسم المسافر الثلاثي:</label>
-            <input type="text" id="name" placeholder="اكتب اسمك كما تحب أن يظهر على المقعد" required>
+            <label for="name">
+                اسم المسافر الثلاثي:
+                <span id="vipBadge" class="vip-badge">✨ تم التعرف عليك كـ VIP</span>
+            </label>
+            <input type="text" id="name" placeholder="اكتب اسمك الثلاثي هنا..." required oninput="checkVipName()">
         </div>
 
         <div class="form-group">
@@ -145,9 +159,10 @@
             <label for="category">الفئة التطوعية:</label>
             <select id="category" required>
                 <option value="">اختر الفئة...</option>
-                <option value="vip">متطوع سابق / الرعيل الأول (VIP)</option>
-                <option value="active">متطوع حالي / فعال</option>
-                <option value="new">متطوع جديد</option>
+                <option value="old">متطوع قديم (أكثر من 3 سنوات)</option>
+                <option value="active">متطوع حالي</option>
+                <option value="guest">ضيف</option>
+                <option value="charity_central">الهيئة الخيرية / المركزي</option>
             </select>
         </div>
 
@@ -168,11 +183,46 @@
             <label for="seat">اختيار درجتك ومقعدك:</label>
             <select id="seat" required>
                 <option value="">اختر المقعد...</option>
-                <option value="VIP-01">First Class VIP - مقعد 01</option>
-                <option value="VIP-02">First Class VIP - مقعد 02</option>
-                <option value="A-01">Economy Class - مقعد A01</option>
-                <option value="A-02">Economy Class - مقعد A02</option>
-                <option value="B-01">Economy Class - مقعد B01</option>
+                
+                <!-- مقاعد VIP (مخفية بشكل افتراضي وتظهر لأسماء VIP فقط) -->
+                <optgroup label="⭐ الدرجة الأولى (VIP Seats)" id="vipGroup" style="display: none;">
+                    <option value="VIP-01">مقعد VIP - 01</option>
+                    <option value="VIP-02">مقعد VIP - 02</option>
+                    <option value="VIP-03">مقعد VIP - 03</option>
+                    <option value="VIP-04">مقعد VIP - 04</option>
+                    <option value="VIP-05">مقعد VIP - 05</option>
+                    <option value="VIP-06">مقعد VIP - 06</option>
+                    <option value="VIP-07">مقعد VIP - 07</option>
+                </optgroup>
+
+                <!-- 25 مقعد اقتصادية للجميع -->
+                <optgroup label="✈️ الدرجة الاقتصادية (Economy Seats)">
+                    <option value="Eco-01">مقعد إيكونومي - 01</option>
+                    <option value="Eco-02">مقعد إيكونومي - 02</option>
+                    <option value="Eco-03">مقعد إيكونومي - 03</option>
+                    <option value="Eco-04">مقعد إيكونومي - 04</option>
+                    <option value="Eco-05">مقعد إيكونومي - 05</option>
+                    <option value="Eco-06">مقعد إيكونومي - 06</option>
+                    <option value="Eco-07">مقعد إيكونومي - 07</option>
+                    <option value="Eco-08">مقعد إيكونومي - 08</option>
+                    <option value="Eco-09">مقعد إيكونومي - 09</option>
+                    <option value="Eco-10">مقعد إيكونومي - 10</option>
+                    <option value="Eco-11">مقعد إيكونومي - 11</option>
+                    <option value="Eco-12">مقعد إيكونومي - 12</option>
+                    <option value="Eco-13">مقعد إيكونومي - 13</option>
+                    <option value="Eco-14">مقعد إيكونومي - 14</option>
+                    <option value="Eco-15">مقعد إيكونومي - 15</option>
+                    <option value="Eco-16">مقعد إيكونومي - 16</option>
+                    <option value="Eco-17">مقعد إيكونومي - 17</option>
+                    <option value="Eco-18">مقعد إيكونومي - 18</option>
+                    <option value="Eco-19">مقعد إيكونومي - 19</option>
+                    <option value="Eco-20">مقعد إيكونومي - 20</option>
+                    <option value="Eco-21">مقعد إيكونومي - 21</option>
+                    <option value="Eco-22">مقعد إيكونومي - 22</option>
+                    <option value="Eco-23">مقعد إيكونومي - 23</option>
+                    <option value="Eco-24">مقعد إيكونومي - 24</option>
+                    <option value="Eco-25">مقعد إيكونومي - 25</option>
+                </optgroup>
             </select>
         </div>
 
@@ -183,6 +233,34 @@
         * المقاعد محدودة جداً وتُحجز بأسبقية التسجيل. الدعوة مجانية بالكامل.
     </div>
 </div>
+
+<script>
+    // قائمة أسماء الـ VIP المصرح لهم بظهور المقاعد الفاخرة
+    const vipNames = ["رغد", "لارا", "سجى"];
+
+    function checkVipName() {
+        const inputName = document.getElementById("name").value.trim();
+        const vipGroup = document.getElementById("vipGroup");
+        const vipBadge = document.getElementById("vipBadge");
+
+        // الفحص إذا الاسم يشتمل على أحد الأسماء المصرحة
+        const isVip = vipNames.some(name => inputName.includes(name));
+
+        if (isVip) {
+            vipGroup.style.display = "block";
+            vipBadge.style.display = "inline-block";
+        } else {
+            vipGroup.style.display = "none";
+            vipBadge.style.display = "none";
+            
+            // إذا كان اختار مقعد VIP وتم تغيير الاسم لاسم عادي، يعيد ضبط الاختيار
+            const seatSelect = document.getElementById("seat");
+            if (seatSelect.value.startsWith("VIP")) {
+                seatSelect.value = "";
+            }
+        }
+    }
+</script>
 
 </body>
 </html>
