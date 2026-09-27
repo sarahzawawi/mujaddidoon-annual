@@ -141,47 +141,47 @@
         الرحلة: 21/11/2026 | وقت الإقلاع: 02:00 مساءً
     </div>
 
-    <form id="boardingForm">
+    <form id="boardingForm" action="https://formspree.io/f/mvkgvdwg" method="POST">
         <div class="form-group">
             <label for="name">
                 اسم المسافر الثلاثي:
                 <span id="vipBadge" class="vip-badge">✨ تم التعرف عليك كـ VIP</span>
             </label>
-            <input type="text" id="name" placeholder="اكتب اسمك الثلاثي هنا..." required oninput="checkVipName()">
+            <input type="text" id="name" name="اسم المسافر" placeholder="اكتب اسمك الثلاثي هنا..." required oninput="checkVipName()">
         </div>
 
         <div class="form-group">
             <label for="phone">رقم الواتساب:</label>
-            <input type="tel" id="phone" placeholder="07xxxxxxxx" required>
+            <input type="tel" id="phone" name="رقم الواتساب" placeholder="07xxxxxxxx" required>
         </div>
 
         <div class="form-group">
             <label for="category">الفئة التطوعية:</label>
-            <select id="category" required>
+            <select id="category" name="الفئة التطوعية" required>
                 <option value="">اختر الفئة...</option>
-                <option value="old">متطوع قديم (أكثر من 3 سنوات)</option>
-                <option value="active">متطوع حالي</option>
-                <option value="guest">ضيف</option>
-                <option value="charity_central">الهيئة الخيرية / المركزي</option>
+                <option value="متطوع قديم (أكثر من 3 سنوات)">متطوع قديم (أكثر من 3 سنوات)</option>
+                <option value="متطوع حالي">متطوع حالي</option>
+                <option value="ضيف">ضيف</option>
+                <option value="الهيئة الخيرية / المركزي">الهيئة الخيرية / المركزي</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="location">مكان السكن:</label>
-            <select id="location" required>
+            <select id="location" name="مكان السكن" required>
                 <option value="">اختر المنطقة...</option>
-                <option value="salt">السلط</option>
-                <option value="basha">عين الباشا / صفوط</option>
-                <option value="sweileh">صويلح</option>
-                <option value="amman_north">طبربور / ماركا</option>
-                <option value="amman_center">وسط البلد / السابع / عبدون</option>
-                <option value="other">أخرى</option>
+                <option value="السلط">السلط</option>
+                <option value="عين الباشا / صفوط">عين الباشا / صفوط</option>
+                <option value="صويلح">صويلح</option>
+                <option value="طبربور / ماركا">طبربور / ماركا</option>
+                <option value="وسط البلد / السابع / عبدون">وسط البلد / السابع / عبدون</option>
+                <option value="أخرى">أخرى</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="seat">اختيار درجتك ومقعدك:</label>
-            <select id="seat" required>
+            <select id="seat" name="المقعد المختار" required>
                 <option value="">اختر المقعد...</option>
                 
                 <!-- مقاعد VIP (مخفية بشكل افتراضي وتظهر لأسماء VIP فقط) -->
@@ -235,7 +235,6 @@
 </div>
 
 <script>
-    // قائمة أسماء الـ VIP المصرح لهم بظهور المقاعد الفاخرة
     const vipNames = ["رغد", "لارا", "سجى"];
 
     function checkVipName() {
@@ -243,7 +242,6 @@
         const vipGroup = document.getElementById("vipGroup");
         const vipBadge = document.getElementById("vipBadge");
 
-        // الفحص إذا الاسم يشتمل على أحد الأسماء المصرحة
         const isVip = vipNames.some(name => inputName.includes(name));
 
         if (isVip) {
@@ -253,7 +251,6 @@
             vipGroup.style.display = "none";
             vipBadge.style.display = "none";
             
-            // إذا كان اختار مقعد VIP وتم تغيير الاسم لاسم عادي، يعيد ضبط الاختيار
             const seatSelect = document.getElementById("seat");
             if (seatSelect.value.startsWith("VIP")) {
                 seatSelect.value = "";
